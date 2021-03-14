@@ -1,6 +1,6 @@
 // 여행 경로
 fun main() {
-    val sol = Solution()
+    val sol = Solution7()
     var tickets =
         arrayOf(arrayOf("ICN", "JFK"), arrayOf("HND", "IAD"), arrayOf("JFK", "HND"))
     tickets = arrayOf(
@@ -13,7 +13,7 @@ fun main() {
     sol.solution(tickets)
 }
 
-class Solution {
+private class Solution7 {
     private lateinit var candidate: List<String>
     fun solution(tickets: Array<Array<String>>): Array<String> {
         candidate = listOf()
