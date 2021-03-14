@@ -2,6 +2,8 @@
 fun main() {
     val sol = Solution6()
     var n = 10
+    n = 6
+//    n = 14
     var times = intArrayOf(7, 10)
     sol.solution(n, times)
 }
@@ -48,7 +50,7 @@ class Solution6 {
         var lb: Long = 1
         var ub: Long = (times.last().toLong() * n.toLong())
         var mid: Long = ((lb + ub) / 2)
-        while (ub - 1 > lb) {
+        while (ub > lb) {
             people = 0
             mid = ((lb + ub) / 2)
             println("upper bound: $ub")
@@ -58,14 +60,15 @@ class Solution6 {
                 people += mid / time.toLong()
             }
             if (people >= n) {
-                println("people: $people > n: $n")
+                println("people: $people >= n: $n")
                 ub = mid
             } else {
-                println("people: $people >= n: $n")
-                lb = mid
+                println("people: $people < n: $n")
+                lb = mid + 1
             }
         }
-        answer = mid.toLong()
+        // while을 빠져나올 땐 ub와 lb가 같아진다.
+        answer = ub.toLong()
         println("Final Answer: $answer")
         return answer
     }
