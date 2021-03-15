@@ -28,15 +28,14 @@ fun main() {
 
         fun floydWarshall() {
             for (startNode in 1 until distanceMatrix.size) {
+                // going through midNode, calculate the shortest distance
                 for (midNode in 1 until distanceMatrix.size) {
-                    // going through midNode, calculate the shortest distance
                     for (endNode in 1 until distanceMatrix.size) {
-                        if (distanceMatrix[startNode][endNode] >
-                            distanceMatrix[startNode][midNode] + distanceMatrix[midNode][endNode]
-                        ) {
-                            distanceMatrix[startNode][endNode] =
+                        distanceMatrix[startNode][endNode] =
+                            minOf(
+                                distanceMatrix[startNode][endNode],
                                 distanceMatrix[startNode][midNode] + distanceMatrix[midNode][endNode]
-                        }
+                            )
                     }
                 }
             }
@@ -125,20 +124,20 @@ fun main() {
 //        intArrayOf(4,3,9)
 //    )
     fares = arrayOf(
-        intArrayOf(1,2,1),
-        intArrayOf(2,3,2),
-        intArrayOf(3,4,3),
-        intArrayOf(1,4,50)
+        intArrayOf(1, 2, 1),
+        intArrayOf(2, 3, 2),
+        intArrayOf(3, 4, 3),
+        intArrayOf(1, 4, 50)
     )
     fares = arrayOf(
-        intArrayOf(1,2,1),
-        intArrayOf(1,3,50)
+        intArrayOf(1, 2, 1),
+        intArrayOf(1, 3, 50)
     )
     fares = arrayOf(
-        intArrayOf(1,2,3),
-        intArrayOf(1,3,100),
-        intArrayOf(2,3,10),
-        intArrayOf(1,4,50)
+        intArrayOf(1, 2, 3),
+        intArrayOf(1, 3, 100),
+        intArrayOf(2, 3, 10),
+        intArrayOf(1, 4, 50)
     )
     n = varList[0]
     s = varList[1]
