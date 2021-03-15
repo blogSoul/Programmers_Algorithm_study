@@ -42,9 +42,7 @@ fun main() {
 
             // 일단 처음 값 계산하고
             var sum = 0
-            for (i in 0 until adv_sec) {
-                sum += video[i]
-            }
+            for (i in 0 until adv_sec) sum += video[i]
             var maxSum = sum
 
             // 투 포인터 알고리즘. 중복연산없이 처음만 빼고 끝만 추가.
