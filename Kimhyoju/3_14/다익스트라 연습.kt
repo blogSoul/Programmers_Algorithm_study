@@ -38,7 +38,7 @@ fun main() {
     }
 
     fun makeDistanceMatrix(n: Int, fares: Array<IntArray>): List<MutableList<Int>> {
-        var distanceMatrix = List(n + 1) { MutableList(n + 1) { 99999999 } }
+        var distanceMatrix = List(n + 1) { MutableList(n + 1) { 100000 } }
         distanceMatrix.forEachIndexed { i, v -> v[i] = 0 }
         for (fare in fares) {
             distanceMatrix[fare[0]][fare[1]] = fare[2]
@@ -63,7 +63,6 @@ fun main() {
         intArrayOf(1, 6, 25)
     )
     var distanceMatrix = makeDistanceMatrix(n, fares)
-    println("distanceMatrix: $distanceMatrix")
     dijkstra(distanceMatrix, a)
     var answer = Int.MAX_VALUE
     for (i in 1..n) {
@@ -71,5 +70,6 @@ fun main() {
         if (answer > distance) answer = distance
 
     }
+    distanceMatrix.forEach { println(it) }
     println("answer: $answer")
 }
