@@ -15,6 +15,7 @@ import kotlin.math.min
 // 광고의 길이는 정해져있으니, 다음으로 넘어갈 때, window의 첫 부분은 빼고 다음부분만 더하면 되는 것이다.
 // 알고나면 간단하지만 생각하기는 어려운.... 다음에는 생각해내자!
 
+// 시간초과 몇개는 그렇다 쳐도... 28번만 계속 틀린다.. 뭐지?
 
 // 71 / 100
 
@@ -50,9 +51,6 @@ fun main() {
                     maxSum = sum
                 }
             }
-
-
-
             answer = changeSecToTime(adv_start)
             return answer
         }
