@@ -1,6 +1,4 @@
 import java.lang.StringBuilder
-import kotlin.math.log
-import kotlin.math.min
 
 // 1. 비디오를 모두 초로 변환하고,
 
@@ -10,25 +8,29 @@ import kotlin.math.min
 // -> 공간은 싸지만, 시간은 비싸다. 백준때문에 공간 너무 신경쓰는듯..
 
 // 3. 이후, 광고의 시간을 video에 처음부터 끝까지 하나하나 갖다대어 sliding window 해야하는데...
-// -> 나는 무식하게 그냥 완전탐색으로 하나하나 비교하고 아니면 다음으로 넘어가서 다시 하나하나 다시 비교했다.
+// -> 나는 모르겠어서 일단 무식하게 그냥 완전탐색으로 하나하나 비교하고 아니면 다음으로 넘어가서 다시 하나하나 다시 비교했다.
 // -> 여기서 이 문제의 진가가 드러난다. 바로 투 포인터 알고리즘. 포인터 2개를 각각 광고의 시작과 끝으로 설정하고
 // 광고의 길이는 정해져있으니, 다음으로 넘어갈 때, window의 첫 부분은 빼고 다음부분만 더하면 되는 것이다.
 // 알고나면 간단하지만 생각하기는 어려운.... 다음에는 생각해내자!
 
 // 시간초과 몇개는 그렇다 쳐도... 28번만 계속 틀린다.. 뭐지?
+// -> sum을 갱신하는 과정에서 끝 인덱스가 잘못됐었음. +1 해줘야 끝까지 간다.
 
-// 71 / 100
+// 이제 시간초과를 해결해야하는데...
+
+
+// 77.4 / 100
 
 fun main() {
     class Solution {
         fun solution(play_time: String, adv_time: String, logs: Array<String>): String {
             var answer: String = ""
-            var video: Array<Int> // 모든 play_time을 초로 변환한 배열
-            video = Array(changeTimeToSec(play_time)){0}
+            val playSec = changeTimeToSec(play_time)
+            // 모든 play_time을 초로 변환한 배열
+            var video = Array(playSec) { 0 }
             for (log in logs) {
-                val splittedTime = log.split("-")
-                val startSec = changeTimeToSec(splittedTime[0])
-                val endSec = changeTimeToSec(splittedTime[1])
+                val startSec = changeTimeToSec(log.substring(0..7))
+                val endSec = changeTimeToSec(log.substring(9))
                 for (sec in startSec until endSec) {
                     video[sec] += 1
                 }
@@ -37,15 +39,18 @@ fun main() {
             // 이제 adv_time을 window로 하고, 이 큰 video에 sliding 하여 합이 가장 커지는 곳을 찾아낸다.
             var adv_start = 0
             var adv_sec = changeTimeToSec(adv_time)
+
+            // 일단 처음 값 계산하고
             var sum = 0
             for (i in 0 until adv_sec) {
                 sum += video[i]
             }
             var maxSum = sum
 
-            for (start in 1 until video.lastIndex - adv_sec) {
-                sum -= video[start-1]
-                sum += video[start + adv_sec-1]
+            // 투 포인터 알고리즘. 중복연산없이 처음만 빼고 끝만 추가.
+            for (start in 1..playSec - adv_sec) {
+                sum -= video[start - 1]
+                sum += video[start + adv_sec - 1]
                 if (sum > maxSum) {
                     adv_start = start
                     maxSum = sum
@@ -57,10 +62,9 @@ fun main() {
 
         fun changeTimeToSec(time: String): Int {
             var result = 0
-            val tempList = time.split(":")
-            result += tempList[0].toInt() * 60 * 60
-            result += tempList[1].toInt() * 60
-            result += tempList[2].toInt()
+            result += time.substring(0..1).toInt() * 60 * 60
+            result += time.substring(3..4).toInt() * 60
+            result += time.substring(6..7).toInt()
             return result
         }
 
