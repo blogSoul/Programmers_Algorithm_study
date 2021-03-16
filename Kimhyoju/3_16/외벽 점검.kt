@@ -29,45 +29,96 @@
 // 가장 짧은 구간을 구해서 그걸 index 0 부터 시작하게 세팅해놓고 친구들 순서만 고려하면 되니...
 // 이렇게 세팅하는 동안 O(n^2)의 시간이 든다. 물론 이 문제에서는 n은 최대 200이니 나쁘지않음.
 
+
+// 코딩하다보니, 완전탐색을 구현하는 속도가 상대적으로 느린 것 같다.
+// 자꾸 생각의 속도를 따라잡지 못하고 멍떄림
+// 완전탐색 감잃었다 특히 dfs 좀 더 해보기
+
+// 60 / 100   다 갈아엎고 다시
+
 fun main() {
     class Solution1 { // Googling 한 방법
         private lateinit var visited: IntArray
-        var minPeople = 0
+        private lateinit var doubledWeak: MutableList<Int>
+        var minPeople = 9
         fun solution(n: Int, weak: IntArray, dist: IntArray): Int {
             var answer = 0
-            visited = IntArray(dist.size){0}
-            var doubledWeak = weak.toMutableList().also { it.addAll(weak.map { v -> v + n }) }
+            visited = IntArray(dist.size) { 0 }
+            doubledWeak = weak.toMutableList().also { it.addAll(weak.map { v -> v + n }) }
             println("doubledWeak: $doubledWeak")
             for (startIdx in weak.indices) {
                 var start = doubledWeak[startIdx]
-                var endIdx = startIdx+(weak.size)-1
+                var endIdx = startIdx + (weak.size) - 1
                 var end = doubledWeak[endIdx]
                 println("start: $start, end: $end")
 
                 for (i in dist.indices) {
                     visited[i] = 1
                     var nextIdx = 1
-                    for (idx in startIdx+1..weak.lastIndex) {
-                        if (dist[i] >= doubledWeak[idx-1] - doubledWeak[idx]) {
+                    for (idx in startIdx + 1..endIdx) {
+                        if (dist[i] >= doubledWeak[idx] - doubledWeak[startIdx]) {
+                            println("dist[$i]: ${dist[i]}")
+                            println("endIdx:: $endIdx")
+                            println("doubledWeak[$idx] - doubledWeak[$startIdx]: ${doubledWeak[idx] - doubledWeak[startIdx]}")
+                            nextIdx++
+                            println("nextIdx++: $nextIdx")
                             continue
+                        } else {
+                            nextIdx++
+                            break
                         }
-                        else nextIdx = idx
                     }
-                    println("nextIdx: $nextIdx")
-                    dfs(nextIdx)
+                    if (nextIdx >= weak.size) {
+                        println(" in first dist[$i]: ${dist[i]}  nextIdx $nextIdx>= weakSize ${weak.size}")
+                        println("visited: ${visited.toList()}")
+                        minPeople = minOf(minPeople,visited.count{it == 1})
+                        println("minPeople: $minPeople")
+                        visited[i] = 0
+                        break
+                    }
+                    println("first nextIdx: $nextIdx")
+                    dfs(dist, weak.size, nextIdx, endIdx)
                     visited[i] = 0
                 }
             }
 
 
-            answer = minPeople
+            answer = if (minPeople < 9) minPeople else -1
             return answer
         }
-        fun dfs(nextIdx: Int) {
-            if (visited.all{it == 1}) {
 
-            }
-            else {
+        fun dfs(dist: IntArray, weakSize: Int, startIdx: Int, endIdx: Int) {
+            if (visited.all { it == 1 }) {
+                // no way. try another case
+            } else {
+                for (i in dist.indices) {
+                    if (visited[i] == 0) {
+                        visited[i] = 1
+                        var nextIdx = startIdx
+                        for (idx in startIdx + 1 until endIdx) {
+                            if (dist[i] >= doubledWeak[idx] - doubledWeak[startIdx]) {
+                            println("dist[$i]: ${dist[i]}")
+                            println("doubledWeak[$idx] - doubledWeak[$startIdx]: ${doubledWeak[idx] - doubledWeak[startIdx]}")
+                                nextIdx++
+                                continue
+                            } else {
+                                nextIdx++
+                                break
+                            }
+                        }
+                        if (nextIdx >= weakSize) {
+                            println("nextIdx $nextIdx>= weakSize $weakSize")
+                            println("visited: ${visited.toList()}")
+                            minPeople = minOf(minPeople,visited.count{it == 1})
+                            println("minPeople: $minPeople")
+                            visited[i] = 0
+                            break
+                        }
+                        println("nextIdx: $nextIdx")
+                        dfs(dist,weakSize,nextIdx,endIdx)
+                        visited[i] = 0
+                    }
+                }
             }
 
         }
@@ -112,5 +163,8 @@ fun main() {
     n = 12
     weak = intArrayOf(1, 5, 6, 10)
     dist = intArrayOf(1, 2, 3, 4)
+//    n = 12
+//    weak = intArrayOf(1,3,4,9,10)
+//    dist = intArrayOf(3,5,7)
     println(sol.solution(n, weak, dist))
 }
