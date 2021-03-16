@@ -8,6 +8,9 @@
 // 92 / 100
 // 뭐가 틀린지 찾아야함.
 
+// 바보같이 무결성 검사에서 result = false로 계속 초기화시켜줘서 맞는것도 틀리게 나왔다. ㅄ인가
+// 지금은 더 간결하게 result 변수를 없애고 continue를 하고 true와 false를 return 하는 형식으로 바꾸었다.
+
 
 fun main() {
     class Solution {
@@ -27,17 +30,14 @@ fun main() {
                     else frames.removeAt(frames.lastIndex)
                 }
             }
-
-            frames.sortWith(compareBy({ it[0] }, { it[1] }, { it[2] }))
-            println("sorted frames: $frames")
+//            println("sorted frames: $frames")
             answer = frames.map { it.toIntArray() }.toTypedArray()
+            answer.sortWith(compareBy({ it[0] }, { it[1] }, { it[2] }))
             return answer
         }
 
         fun checkIntegrity(): Boolean {
-            var result = false
             for (task in frames) {
-                result = false
                 var x = task[0]
                 var y = task[1]
                 var frame = task[2]
@@ -45,20 +45,18 @@ fun main() {
                     if (y == 0 || frames.any { it[2] == 1 && it[0] == x && it[1] == y } ||
                         frames.any { it[2] == 1 && it[0] + 1 == x && it[1] == y } ||
                         frames.any { it[2] == 0 && it[0] == x && it[1] == y - 1 }) {
-                        result = true
-                    }
-                    else return false
+                        continue
+                    } else return false
                 } else { // beam
                     if (frames.any { it[2] == 0 && it[0] == x && it[1] == y - 1 } ||
                         frames.any { it[2] == 0 && it[0] == x + 1 && it[1] == y - 1 } ||
                         (frames.any { it[2] == 1 && it[0] == x - 1 && it[1] == y } &&
-                                (frames.any { it[2] == 1 && it[0] == x + 1 && it[1] == y }))) {
-                        result = true
-                    }
-                    else return false
+                                frames.any { it[2] == 1 && it[0] == x + 1 && it[1] == y })) {
+                        continue
+                    } else return false
                 }
             }
-            return result
+            return true
         }
     }
 
