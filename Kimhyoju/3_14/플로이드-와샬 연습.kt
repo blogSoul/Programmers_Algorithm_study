@@ -2,43 +2,24 @@
 // Floyd-Warshall 알고리즘은 모든 점에서 모든 점까지의 최소비용을 구하는 알고리즘이다.
 // Dijkstra 와 다르게, 음수여도 된다. 이는 Bellman-Ford 알고리즘도 마찬가지.
 fun main() {
-    fun dijkstra(distanceMatrix: List<MutableList<Int>>, start: Int, end: Int) {
-        var result = Int.MAX_VALUE
-        var shortestDistance: Int
-        var shortestV = end
-        var visited = MutableList(distanceMatrix.size) { 0 }
-        visited[0] = 1
-        visited[start] = 1
-        while (visited.any { it == 0 }) {
-            shortestDistance = Int.MAX_VALUE
-            for (i in 1 until distanceMatrix.size) {
-                if (visited[i] == 0) {
-                    // visited 하지 않은 점 중 가장 가까운 점
-//                    println("unvisited: $i")
-                    if (shortestDistance > distanceMatrix[start][i]) {
-                        shortestDistance = distanceMatrix[start][i]
-                        shortestV = i
-                    }
-                }
-            }
-            visited[shortestV] = 1
-//        println("starting: $start")
-//        println("visited: $visited")
-//        println("shortestV: $shortestV")
-//        println("shortestDistance: $shortestDistance")
-//        println("distanceMatrix: $distanceMatrix")
-
-            // 이제 distanceMatrix 갱신.
-            for (i in 1 until distanceMatrix.size) {
-                for (j in 1 until distanceMatrix.size) {
-                    if (distanceMatrix[i][j] > distanceMatrix[i][shortestV]+distanceMatrix[shortestV][j]) {
-                        distanceMatrix[i][j] = distanceMatrix[i][shortestV]+distanceMatrix[shortestV][j]
+    // 플로이드-와샬 알고리즘은 시작점을 기준으로가 아닌,
+    //모든 Pair에 대해서 연산하므로 start 가 필요없다.
+    fun floydWarshall(distanceMatrix: List<MutableList<Int>>) {
+        var shortestDistance = Int.MAX_VALUE
+        var shortestV = 1
+        for (startNode in 1 until distanceMatrix.size) {
+            for (midNode in 1 until distanceMatrix.size) {
+                // going through midNode, calculate the shortest distance
+                for (endNode in 1 until distanceMatrix.size) {
+                    if (distanceMatrix[startNode][endNode] >
+                        distanceMatrix[startNode][midNode] + distanceMatrix[midNode][endNode]
+                    ) {
+                        distanceMatrix[startNode][endNode] =
+                            distanceMatrix[startNode][midNode] + distanceMatrix[midNode][endNode]
                     }
                 }
             }
         }
-        // return 할 필요가 없다. dijkstra 를 한번 하고나면, distanceMatrix 가 완성되어 있으니.
-//    return distanceMatrix[start][end]
     }
 
     fun makeDistanceMatrix(n: Int, fares: Array<IntArray>): List<MutableList<Int>> {
@@ -50,6 +31,7 @@ fun main() {
         }
         return distanceMatrix
     }
+
     var n = 6
     var s = 4
     var a = 6
@@ -74,11 +56,11 @@ fun main() {
 //        }
 //    }
 //    println("dijkstra from $a to $b: ${dijkstra(distanceMatrix, a, b)}")
-    dijkstra(distanceMatrix, a, b)
     var answer = Int.MAX_VALUE
+    floydWarshall(distanceMatrix)
     for (i in 1..n) {
 //        var distance = dijkstra(distanceMatrix, s, i) + dijkstra(distanceMatrix, i, a) + dijkstra(distanceMatrix, i, b)
-        var distance = distanceMatrix[s][i]+distanceMatrix[i][a]+distanceMatrix[i][b]
+        var distance = distanceMatrix[s][i] + distanceMatrix[i][a] + distanceMatrix[i][b]
         if (answer > distance) answer = distance
 
     }

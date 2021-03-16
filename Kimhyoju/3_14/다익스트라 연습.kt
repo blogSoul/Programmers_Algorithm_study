@@ -5,10 +5,9 @@
 // 효율성 반은 통과 반은 불합격.
 // 100에 71.7점.
 fun main() {
-    fun dijkstra(distanceMatrix: List<MutableList<Int>>, start: Int, end: Int) {
-        var result = Int.MAX_VALUE
+    fun dijkstra(distanceMatrix: Array<IntArray>, start: Int) {
         var shortestDistance: Int
-        var shortestV = end
+        var shortestV = start
         var visited = MutableList(distanceMatrix.size) { 0 }
         visited[0] = 1
         visited[start] = 1
@@ -38,8 +37,8 @@ fun main() {
 //    return distanceMatrix[start][end]
     }
 
-    fun makeDistanceMatrix(n: Int, fares: Array<IntArray>): List<MutableList<Int>> {
-        var distanceMatrix = List(n + 1) { MutableList(n + 1) { 99999999 } }
+    fun makeDistanceMatrix(n: Int, fares: Array<IntArray>): Array<IntArray> {
+        var distanceMatrix = Array(n + 1) { IntArray(n + 1) { 100000 } }
         distanceMatrix.forEachIndexed { i, v -> v[i] = 0 }
         for (fare in fares) {
             distanceMatrix[fare[0]][fare[1]] = fare[2]
@@ -64,13 +63,13 @@ fun main() {
         intArrayOf(1, 6, 25)
     )
     var distanceMatrix = makeDistanceMatrix(n, fares)
-    println("distanceMatrix: $distanceMatrix")
-    dijkstra(distanceMatrix, a, b)
+    dijkstra(distanceMatrix, a)
     var answer = Int.MAX_VALUE
     for (i in 1..n) {
         var distance = distanceMatrix[s][i] + distanceMatrix[i][a] + distanceMatrix[i][b]
         if (answer > distance) answer = distance
 
     }
+    distanceMatrix.forEach { println(it) }
     println("answer: $answer")
 }
