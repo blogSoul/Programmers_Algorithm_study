@@ -13,7 +13,7 @@
 // 일단 데이터 수가 적으니 완전탐색으로도 해결가능할듯 한데..
 
 
-// 결국 구글링함.
+// 결국 구글링함. (= Solution1)
 // 일단 배열로 표현하는 건 맞았는데, 단순한 1차원 배열은 번거로우므로
 // 배열의 크기를 2배로 늘려주는 것이다.
 // n = 12, weak = [1,5,6,10] 이면, weak = [1,5,6,10,13,17,18,22] 으로..
@@ -25,12 +25,55 @@
 // 친구들의 투입순서를 고려해줘야하므로 이것도 그저 완전탐색으로 모든 순열에 대해서 하면 된다.
 
 
-// 이렇게 보니, 더 편하진 않지만 내 방법도 꽤나 괜찮다는 생각이 든다. ㅇㅇ
+// 이렇게 보니, 더 편하진 않지만 내 방법도 꽤나 괜찮다는 생각이 든다. ㅇㅇ (= Solution2)
 // 가장 짧은 구간을 구해서 그걸 index 0 부터 시작하게 세팅해놓고 친구들 순서만 고려하면 되니...
 // 이렇게 세팅하는 동안 O(n^2)의 시간이 든다. 물론 이 문제에서는 n은 최대 200이니 나쁘지않음.
 
 fun main() {
-    class Solution {
+    class Solution1 { // Googling 한 방법
+        private lateinit var visited: IntArray
+        var minPeople = 0
+        fun solution(n: Int, weak: IntArray, dist: IntArray): Int {
+            var answer = 0
+            visited = IntArray(dist.size){0}
+            var doubledWeak = weak.toMutableList().also { it.addAll(weak.map { v -> v + n }) }
+            println("doubledWeak: $doubledWeak")
+            for (startIdx in weak.indices) {
+                var start = doubledWeak[startIdx]
+                var endIdx = startIdx+(weak.size)-1
+                var end = doubledWeak[endIdx]
+                println("start: $start, end: $end")
+
+                for (i in dist.indices) {
+                    visited[i] = 1
+                    var nextIdx = 1
+                    for (idx in startIdx+1..weak.lastIndex) {
+                        if (dist[i] >= doubledWeak[idx-1] - doubledWeak[idx]) {
+                            continue
+                        }
+                        else nextIdx = idx
+                    }
+                    println("nextIdx: $nextIdx")
+                    dfs(nextIdx)
+                    visited[i] = 0
+                }
+            }
+
+
+            answer = minPeople
+            return answer
+        }
+        fun dfs(nextIdx: Int) {
+            if (visited.all{it == 1}) {
+
+            }
+            else {
+            }
+
+        }
+    }
+
+    class Solution2 {
         private lateinit var wall: IntArray
         fun solution(n: Int, weak: IntArray, dist: IntArray): Int {
             var answer = 0
@@ -61,11 +104,12 @@ fun main() {
         }
     }
 
-    val sol = Solution()
+
+    val sol = Solution1()
     var n: Int
     var weak: IntArray
     var dist: IntArray
-    n = 5
+    n = 12
     weak = intArrayOf(1, 5, 6, 10)
     dist = intArrayOf(1, 2, 3, 4)
     println(sol.solution(n, weak, dist))
