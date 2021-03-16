@@ -35,7 +35,7 @@ fun main() {
                     video[sec] += 1
                 }
             }
-//            println("flattened video: $video")
+//            println("flattened video: )
             // 이제 adv_time을 window로 하고, 이 큰 video에 sliding 하여 합이 가장 커지는 곳을 찾아낸다.
             var adv_start = 0
             var adv_sec = changeTimeToSec(adv_time)
@@ -67,15 +67,13 @@ fun main() {
         }
 
         fun changeSecToTime(time: Int): String {
-            var result = ""
             var hour = (time / (60 * 60)).toString()
             if (hour.length == 1) hour = "0$hour"
             var minute = (time % (60 * 60) / 60).toString()
             if (minute.length == 1) minute = "0${minute}"
             var second = (time % 60).toString()
             if (second.length == 1) second = "0${second}"
-            result = "$hour:$minute:$second"
-            return result
+            return "$hour:$minute:$second"
         }
     }
 
