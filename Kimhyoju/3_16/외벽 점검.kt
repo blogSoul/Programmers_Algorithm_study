@@ -36,6 +36,8 @@
 
 // 60 / 100   다 갈아엎고 다시
 
+// 완탐에 쓸데없이 시간 낭비 오졌음 ㅇㅇ
+
 fun main() {
     class Solution1 { // Googling 한 방법
         private lateinit var visited: IntArray
@@ -53,26 +55,25 @@ fun main() {
                 println("start: $start, end: $end")
 
                 for (i in dist.indices) {
+                    println("first dist[$i]: ${dist[i]}")
                     visited[i] = 1
-                    var nextIdx = 1
-                    for (idx in startIdx + 1..endIdx) {
+                    var nextIdx = startIdx+1
+                    for (idx in nextIdx..endIdx) {
                         if (dist[i] >= doubledWeak[idx] - doubledWeak[startIdx]) {
-                            println("dist[$i]: ${dist[i]}")
-                            println("endIdx:: $endIdx")
+                            println("endIdx: $endIdx")
                             println("doubledWeak[$idx] - doubledWeak[$startIdx]: ${doubledWeak[idx] - doubledWeak[startIdx]}")
                             nextIdx++
                             println("nextIdx++: $nextIdx")
                             continue
                         } else {
-                            nextIdx++
                             break
                         }
                     }
-                    if (nextIdx >= weak.size) {
-                        println(" in first dist[$i]: ${dist[i]}  nextIdx $nextIdx>= weakSize ${weak.size}")
+                    if (nextIdx > endIdx) {
+                        println(" in first startIdx: $startIdx dist[$i]: ${dist[i]}  nextIdx $nextIdx> endIdx $endIdx")
                         println("visited: ${visited.toList()}")
                         minPeople = minOf(minPeople,visited.count{it == 1})
-                        println("minPeople: $minPeople")
+                        println(" - - - - minPeople: $minPeople")
                         visited[i] = 0
                         break
                     }
@@ -88,29 +89,29 @@ fun main() {
         }
 
         fun dfs(dist: IntArray, weakSize: Int, startIdx: Int, endIdx: Int) {
+            println("dfs in $startIdx ~ $endIdx")
             if (visited.all { it == 1 }) {
                 // no way. try another case
             } else {
                 for (i in dist.indices) {
                     if (visited[i] == 0) {
                         visited[i] = 1
-                        var nextIdx = startIdx
-                        for (idx in startIdx + 1 until endIdx) {
+                        var nextIdx = startIdx+1
+                        for (idx in nextIdx .. endIdx) {
                             if (dist[i] >= doubledWeak[idx] - doubledWeak[startIdx]) {
                             println("dist[$i]: ${dist[i]}")
-                            println("doubledWeak[$idx] - doubledWeak[$startIdx]: ${doubledWeak[idx] - doubledWeak[startIdx]}")
+                            println("doubledWeak[$idx] - doubledWeak[${startIdx}]: ${doubledWeak[idx] - doubledWeak[startIdx]}")
                                 nextIdx++
                                 continue
                             } else {
-                                nextIdx++
                                 break
                             }
                         }
-                        if (nextIdx >= weakSize) {
-                            println("nextIdx $nextIdx>= weakSize $weakSize")
+                        if (nextIdx > endIdx) {
+                            println("nextIdx $nextIdx> endIdx $endIdx")
                             println("visited: ${visited.toList()}")
                             minPeople = minOf(minPeople,visited.count{it == 1})
-                            println("minPeople: $minPeople")
+                            println(" - - - - minPeople: $minPeople")
                             visited[i] = 0
                             break
                         }
@@ -124,47 +125,15 @@ fun main() {
         }
     }
 
-    class Solution2 {
-        private lateinit var wall: IntArray
-        fun solution(n: Int, weak: IntArray, dist: IntArray): Int {
-            var answer = 0
-
-            wall = IntArray(n) { 0 }
-            for (i in weak) wall[i] = 1
-            var totalWeak = weak.size
-            var minPeople = dist.size
-
-            val vel = dist.sortedDescending()
-            for (v in vel) {
-                for (i in weak) {
-                    var rest = -1
-                    if (i + v >= n) rest = n - i - v
-
-
-
-
-                    if (rest >= 0) { // 돌아서 index 0부터 더 가야함.
-
-                    }
-                }
-            }
-
-
-
-            return answer
-        }
-    }
-
-
     val sol = Solution1()
     var n: Int
     var weak: IntArray
     var dist: IntArray
-    n = 12
-    weak = intArrayOf(1, 5, 6, 10)
-    dist = intArrayOf(1, 2, 3, 4)
 //    n = 12
-//    weak = intArrayOf(1,3,4,9,10)
-//    dist = intArrayOf(3,5,7)
+//    weak = intArrayOf(1, 5, 6, 10)
+//    dist = intArrayOf(1, 2, 3, 4)
+    n = 12
+    weak = intArrayOf(1,3,4,9,10)
+    dist = intArrayOf(3,5,7)
     println(sol.solution(n, weak, dist))
 }
