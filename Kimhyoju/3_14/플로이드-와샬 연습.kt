@@ -7,8 +7,9 @@ fun main() {
     fun floydWarshall(distanceMatrix: List<MutableList<Int>>) {
         var shortestDistance = Int.MAX_VALUE
         var shortestV = 1
-        for (startNode in 1 until distanceMatrix.size) {
-            for (midNode in 1 until distanceMatrix.size) {
+        // mid -> start -> end 순으로 해야한다
+        for (midNode in 1 until distanceMatrix.size) {
+            for (startNode in 1 until distanceMatrix.size) {
                 // going through midNode, calculate the shortest distance
                 for (endNode in 1 until distanceMatrix.size) {
                     if (distanceMatrix[startNode][endNode] >
