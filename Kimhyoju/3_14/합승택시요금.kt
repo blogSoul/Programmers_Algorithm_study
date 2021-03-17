@@ -3,6 +3,8 @@
 // 플로이드-와샬로 하니까 정확성 테스트가 4개정도 불합..
 // 게다가 시간초과도 뜬다... 다익스트라보단 훨씬 낫지만..
 // 45/100
+
+// 결국 합격
 fun main() {
     class Solution {
         fun solution(n: Int, s: Int, a: Int, b: Int, fares: Array<IntArray>): Int {
@@ -14,6 +16,7 @@ fun main() {
             }
 
             // Floyd-Warshall
+            // mid -> start -> end 순으로!
             for (midNode in 1..n) {
                 for (startNode in 1..n) {
                     // going through midNode, calculate the shortest distance
