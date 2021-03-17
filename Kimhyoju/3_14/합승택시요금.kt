@@ -16,6 +16,7 @@ fun main() {
             }
 
             // Floyd-Warshall
+            // mid -> start -> end 순으로!
             for (midNode in 1..n) {
                 for (startNode in 1..n) {
                     // going through midNode, calculate the shortest distance
