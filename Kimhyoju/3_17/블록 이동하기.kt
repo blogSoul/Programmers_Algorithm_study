@@ -62,7 +62,6 @@ fun main() {
                 val q = queue.first()
                 queue.removeAt(0)
 
-                // action(x1,y1,x2,y2,count)
                 val x1 = q[0]
                 val y1 = q[1]
                 val x2 = q[2]
@@ -87,7 +86,6 @@ fun main() {
                         println("from $x1 $y1 $x2 $y2")
                         println("go right")
                         queue.add(listOf(x1 + 1, y1, x2 + 1, y2, count + 1))
-                        // action(x1 + 1, y1, x2 + 1, y2, count + 1)
                     }
                 }
                 // go left
@@ -96,7 +94,6 @@ fun main() {
                         println("from $x1 $y1 $x2 $y2")
                         println("go left")
                         queue.add(listOf(x1 - 1, y1, x2 - 1, y2, count + 1))
-                        // action(x1 - 1, y1, x2 - 1, y2, count + 1)
                     }
                 }
                 // go up
@@ -105,7 +102,6 @@ fun main() {
                         println("from $x1 $y1 $x2 $y2")
                         println("go up")
                         queue.add(listOf(x1, y1 - 1, x2, y2 - 1, count + 1))
-                        // action(x1, y1 - 1, x2, y2 - 1, count + 1)
                     }
                 }
                 // go down
@@ -114,7 +110,6 @@ fun main() {
                         println("from $x1 $y1 $x2 $y2")
                         println("go down")
                         queue.add(listOf(x1, y1 + 1, x2, y2 + 1, count + 1))
-                        // action(x1, y1 + 1, x2, y2 + 1, count + 1)
                     }
                 }
                 if (x1 == x2) { // vertical
@@ -127,14 +122,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left up")
                                 queue.add(listOf(x1 - 1, y1 - 1, x2, y2, count + 1))
-                                // action(x1 - 1, y1 + 1, x2, y2, count + 1)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 - 1][x2 - 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left up")
                                 queue.add(listOf(x1, y1, x2 - 1, y2 - 1, count + 1))
-                                // action(x1, y1, x2 - 1, y2 + 1, count + 1)
                             }
                         }
                     }
@@ -145,14 +138,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left down")
                                 queue.add(listOf(x1 - 1, y1 + 1, x2, y2, count + 1))
-                                // action(x1 - 1, y1 - 1, x2, y2, count + 1)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 + 1][x2 - 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left down")
                                 queue.add(listOf(x1, y1, x2 - 1, y2 + 1, count + 1))
-                                // action(x1, y1, x2 - 1, y2 - 1, count + 1)
                             }
                         }
                     }
@@ -163,14 +154,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right up")
                                 queue.add(listOf(x1 + 1, y1 - 1, x2, y2, count + 1))
-                                // action(x1 + 1, y1 - 1, x2, y2, count + 1)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 - 1][x2 + 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right up")
                                 queue.add(listOf(x1, y1, x2 + 1, y2 - 1, count + 1))
-                                // action(x1, y1, x2 + 1, y2 - 1, count + 1)
                             }
                         }
 
@@ -182,14 +171,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right down")
                                 queue.add(listOf(x1 + 1, y1 + 1, x2, y2, count + 1))
-                                // action(x1 + 1, y1 + 1, x2, y2, count + 1)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 + 1][x2 + 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right down")
                                 queue.add(listOf(x1, y1, x2 + 1, y2 + 1, count + 1))
-                                // action(x1, y1, x2 + 1, y2 + 1, count + 1)
                             }
                         }
 
@@ -204,14 +191,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left up")
                                 queue.add(listOf(x1 - 1, y1 - 1, x2, y2, count + 1))
-                                // action(x1-1,y1-1,x2,y2,count)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 - 1][x2 - 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left up")
                                 queue.add(listOf(x1, y1, x2 - 1, y2 - 1, count + 1))
-                                // action(x1,y1,x2-1,y2-1,count)
                             }
                         }
                     }
@@ -222,14 +207,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left down")
                                 queue.add(listOf(x1 - 1, y1 + 1, x2, y2, count + 1))
-                                // action(x1-1,y1+1,x2,y2,count)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 + 1][x2 - 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate left down")
                                 queue.add(listOf(x1, y1, x2 - 1, y2 + 1, count + 1))
-                                // action(x1,y1,x2-1,y2+1,count)
                             }
                         }
                     }
@@ -240,14 +223,12 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right up")
                                 queue.add(listOf(x1 + 1, y1 - 1, x2, y2, count + 1))
-                                // action(x1+1,y1-1,x2,y2,count)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 - 1][x2 + 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right up")
                                 queue.add(listOf(x1, y1, x2 + 1, y2 - 1, count + 1))
-                                // action(x1,y1,x2+1,y2-1,count)
                             }
                         }
                     }
@@ -258,118 +239,18 @@ fun main() {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right down")
                                 queue.add(listOf(x1 + 1, y1 + 1, x2, y2, count + 1))
-                                // action(x1+1,y1+1,x2,y2,count)
                             }
                         } else {
                             if (count >= dp[y1][x1] || count >= dp[y2 + 1][x2 + 1]) {
                                 println("from $x1 $y1 $x2 $y2")
                                 println("rotate right down")
                                 queue.add(listOf(x1, y1, x2 + 1, y2 + 1, count + 1))
-                                // action(x1,y1,x2+1,y2+1,count)
                             }
                         }
                     }
                 }
             }
             return answer
-        }
-
-        fun action(x1: Int, y1: Int, x2: Int, y2: Int, count: Int) {
-            // go right
-            if (x1 + 1 < N && x2 + 1 < N) {
-                println("go right")
-                action(x1 + 1, y1, x2 + 1, y2, count + 1)
-            }
-            // go left
-            if (x1 - 1 >= 0 && x2 - 1 >= 0) {
-                println("go left")
-                action(x1 - 1, y1, x2 - 1, y2, count + 1)
-            }
-            // go up
-            if (y1 + 1 >= 0 && y2 + 1 >= 0) {
-                println("go up")
-                action(x1, y1 - 1, x2, y2 - 1, count + 1)
-            }
-            // go down
-            if (y1 + 1 < N && y2 + 1 < N) {
-                println("go down")
-                action(x1, y1 + 1, x2, y2 + 1, count + 1)
-            }
-            if (x1 == x2) { // vertical
-                var upY = minOf(y1, y2)
-                var downY = maxOf(y1, y2)
-                // rotate left up
-                if (x1 - 1 >= 0 && boards[downY][x1 - 1] != 1) {
-                    if (downY == y1) {
-                        action(x1 - 1, y1 + 1, x2, y2, count + 1)
-                    } else {
-                        action(x1, y1, x2 - 1, y2 + 1, count + 1)
-                    }
-                }
-                // rotate left down
-                if (x1 - 1 >= 0 && boards[upY][x1 - 1] != 1) {
-                    if (upY == y1) {
-                        action(x1 - 1, y1 - 1, x2, y2, count + 1)
-                    } else {
-                        action(x1, y1, x2 - 1, y2 - 1, count + 1)
-                    }
-                }
-                // rotate right up
-                if (x1 + 1 < N && boards[downY][x1 + 1] != 1) {
-                    if (downY == y1) {
-                        action(x1 + 1, y1 - 1, x2, y2, count + 1)
-                    } else {
-                        action(x1, y1, x2 + 1, y2 - 1, count + 1)
-                    }
-
-                }
-                // rotate right down
-                if (x1 + 1 < N && boards[upY][x1 + 1] != 1) {
-                    if (upY == y1) {
-                        action(x1 + 1, y1 + 1, x2, y2, count + 1)
-                    } else {
-                        action(x1, y1, x2 + 1, y2 + 1, count + 1)
-                    }
-
-                }
-            } else if (y1 == y2) { // horizontal
-                var leftX = minOf(x1, x2)
-                var rightX = maxOf(x1, x2)
-                // rotate left up
-                if (y1 - 1 >= 0 && boards[y1 - 1][rightX] != 1) {
-                    if (rightX == x1) {
-                        action(x1 - 1, y1 - 1, x2, y2, count)
-                    } else {
-                        action(x1, y1, x2 - 1, y2 - 1, count)
-                    }
-                }
-                // rotate left down
-                if (y1 + 1 < N && boards[y1 + 1][rightX] != 1) {
-                    if (rightX == x1) {
-                        action(x1 - 1, y1 + 1, x2, y2, count)
-                    } else {
-                        action(x1, y1, x2 - 1, y2 + 1, count)
-                    }
-                }
-                // rotate right up
-                if (y1 - 1 >= 0 && boards[y1 - 1][leftX] != 1) {
-                    if (leftX == x1) {
-                        action(x1 + 1, y1 - 1, x2, y2, count)
-                    } else {
-                        action(x1, y1, x2 + 1, y2 - 1, count)
-                    }
-                }
-                // rotate right down
-                if (y1 + 1 < N && boards[y1 + 1][leftX] != 1) {
-                    if (leftX == x1) {
-                        action(x1 + 1, y1 + 1, x2, y2, count)
-                    } else {
-                        action(x1, y1, x2 + 1, y2 + 1, count)
-                    }
-                }
-            }
-
-
         }
     }
 
