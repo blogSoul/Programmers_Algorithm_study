@@ -1,3 +1,5 @@
+import java.util.*
+
 // 1. 비디오를 모두 초로 변환하고,
 
 // 2. 각 시청자들의 구간을 +=1 하여 하나의 비디오로 flatten 한다.
@@ -20,14 +22,21 @@
 
 
 // 77.4 / 100
+// 8~11, 13~14, 17,23
 
+// 하... video를 생성할 때, IntArray(playSec) {0} 으로 초기화해서 시간초과였던거다.
+// {0}을 없애니까 4782ms -> 757ms 로 줄었다.. 개빡치네 ㅎㅎㅎㅎ..
+// 또 17번만 틀리길래 봤는데, sum과 maxSum이 Int라서 오버플로우나서 그런거였다.
+// logs의 수가 30만 이하라고 해도, video에서 구간을 모두 더하는 sum의 경우
+// 최악의 상황에서는 30만을 adv_sec 만큼 더해야 할 수도 있다.
+// sum <= 30만 * adv_sec 인 것이다. ㅎㄷㄷ... 오버플로우 날만도 하지.
 fun main() {
     class Solution {
         fun solution(play_time: String, adv_time: String, logs: Array<String>): String {
             var answer: String = ""
             val playSec = changeTimeToSec(play_time)
             // 모든 play_time을 초로 변환한 배열
-            var video = Array(playSec) { 0 }
+            var video = IntArray(playSec)
             for (log in logs) {
                 val startSec = changeTimeToSec(log.substring(0..7))
                 val endSec = changeTimeToSec(log.substring(9))
@@ -41,9 +50,9 @@ fun main() {
             var adv_sec = changeTimeToSec(adv_time)
 
             // 일단 처음 값 계산하고
-            var sum = 0
+            var sum:Long = 0
             for (i in 0 until adv_sec) sum += video[i]
-            var maxSum = sum
+            var maxSum: Long = sum
 
             // 투 포인터 알고리즘. 중복연산없이 처음만 빼고 끝만 추가.
             for (start in 1..playSec - adv_sec) {
@@ -69,7 +78,7 @@ fun main() {
         fun changeSecToTime(time: Int): String {
             var hour = (time / (60 * 60)).toString()
             if (hour.length == 1) hour = "0$hour"
-            var minute = (time % (60 * 60) / 60).toString()
+            var minute = ((time % (60 * 60)) / 60).toString()
             if (minute.length == 1) minute = "0${minute}"
             var second = (time % 60).toString()
             if (second.length == 1) second = "0${second}"
@@ -97,8 +106,9 @@ fun main() {
 //        "38:21:49-42:51:45"
 //    )
 
-    play_time = "50:00:00"
-    adv_time = "50:00:00"
-    logs = arrayOf("15:36:51-38:21:49", "10:14:18-15:36:51", "38:21:49-42:51:45")
+//
+//    play_time = "50:00:00"
+//    adv_time = "50:00:00"
+//    logs = arrayOf("15:36:51-38:21:49", "10:14:18-15:36:51", "38:21:49-42:51:45")
     println(sol.solution(play_time, adv_time, logs))
 }
