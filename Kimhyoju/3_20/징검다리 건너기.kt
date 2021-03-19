@@ -1,5 +1,3 @@
-package `3_19`
-
 fun main() {
 
     class Solution {
