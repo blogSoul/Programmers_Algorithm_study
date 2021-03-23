@@ -40,6 +40,9 @@ fun main() {
         fun solution(board: Array<IntArray>, r: Int, c: Int): Int {
             var answer = Int.MAX_VALUE
             var distSum: Int
+
+            var brd = board.map { it.clone() }.toTypedArray()
+
             val cardSet = mutableSetOf<Int>()
             for (i in board.indices) {
                 for (j in board[0].indices) {
@@ -50,7 +53,7 @@ fun main() {
             }
             println("cardSet: $cardSet")
 
-            val cardPosition = List(cardSet.maxOrNull()!!.toInt()+1) { mutableListOf<Pair<Int, Int>>() }
+            val cardPosition = List(cardSet.maxOrNull()!!.toInt() + 1) { mutableListOf<Pair<Int, Int>>() }
             for (i in board.indices) {
                 for (j in board[0].indices) {
                     if (board[i][j] != 0) {
@@ -70,27 +73,32 @@ fun main() {
             for (setList in permSetList) {
                 val permList = permutationList(setList, cardPosition)
                 println("setList: $setList")
-//                println("permList: $permList")
-//                println("permList.size: ${permList.size}")
+                println("permList: $permList")
+                println("permList.size: ${permList.size}")
                 for (list in permList) {
-//                    println("list: $list")
+                    println("list: $list")
                     distSum = 0
                     var startY = list[0].first
                     var startX = list[0].second
-                    distSum += distanceTo(r, c, startY, startX, board, cardSet)
+                    println("finding ${setList[0]}")
+                    var tempBrd = brd.map { it.clone() }.toTypedArray()
+                    distSum += distanceTo(r, c, startY, startX, tempBrd, cardSet)
+                    tempBrd[startY][startX] = 0
+                    tempBrd.forEach { println(it.toList()) }
                     var count = -2
                     val subtractSetList = mutableSetOf<Int>()
                     for ((idx, pair) in list.withIndex()) {
                         if (idx > 0) {
                             count++
                             if (count % 2 == 0) {
-                                subtractSetList.add(setList[count / 2])
-                                //println("subtractSetList: $subtractSetList")
+                                subtractSetList.add(setList[count / 2]) // 1, 3
                             }
                             val y = pair.first
                             val x = pair.second
                             println("finding ${setList[idx / 2]}")
-                            distSum += distanceTo(startY, startX, y, x, board, cardSet.subtract(subtractSetList))
+                            distSum += distanceTo(startY, startX, y, x, tempBrd, cardSet.subtract(subtractSetList))
+                            tempBrd[y][x] = 0
+                            tempBrd.forEach { println(it.toList()) }
                             startY = y
                             startX = x
                         }
@@ -188,7 +196,6 @@ fun main() {
             brd: Array<IntArray>,
             existingCard: Set<Int>
         ): Int {
-            println("existingCard: $existingCard")
             var cursor = Pair(startY, startX)
             var count = 0
 
@@ -220,12 +227,12 @@ fun main() {
                 index = -1
                 if (cursor.second != 3) {
                     for (i in cursor.second + 1 until 4) {
-                        if (brd[cursor.first][i] in existingCard) {
+                        if (brd[cursor.first][i] != 0) { // 오른쪽으로 갈때 맨 첫번째로 걸리는 카드 좌표로.
                             index = i
                             break
                         }
                     }
-                    if (index == -1) index = 3
+                    if (index == -1) index = 3 // 오른쪽으로 CTRL 할때 걸리는 카드 없으면 그냥 오른쪽 끝으로.
 
                     if (visited[cursor.first][index] == 0) {
                         queueCursor.add(Pair(cursor.first, index))
@@ -249,7 +256,7 @@ fun main() {
                 index = -1
                 if (cursor.second != 0) {
                     for (i in 0 until cursor.second) {
-                        if (brd[cursor.first][i] in existingCard) {
+                        if (brd[cursor.first][i] != 0) {
                             index = i
                         }
                     }
@@ -277,7 +284,7 @@ fun main() {
                 index = -1
                 if (cursor.first != 0) {
                     for (i in 0 until cursor.first - 1) {
-                        if (brd[i][cursor.second] in existingCard) {
+                        if (brd[i][cursor.second] != 0) {
                             index = i
                         }
                     }
@@ -305,7 +312,7 @@ fun main() {
                 index = -1
                 if (cursor.first != 3) {
                     for (i in cursor.first + 1 until 4) {
-                        if (brd[i][cursor.second] in existingCard) {
+                        if (brd[i][cursor.second] != 0) {
                             index = i
                             break
                         }
@@ -336,61 +343,61 @@ fun main() {
     )
     r = 1
     c = 0
-
-    board = arrayOf(
-        intArrayOf(3, 0, 0, 2),
-        intArrayOf(0, 0, 1, 0),
-        intArrayOf(0, 1, 0, 0),
-        intArrayOf(2, 0, 0, 3)
-    )
-    r = 0
-    c = 1
-
-    board = arrayOf(
-        intArrayOf(1, 0, 0, 0),
-        intArrayOf(0, 0, 0, 0),
-        intArrayOf(0, 0, 0, 0),
-        intArrayOf(0, 0, 1, 0)
-    )
-    r = 1
-    c = 0
-
-
-    board = arrayOf(
-        intArrayOf(1, 2, 2, 3),
-        intArrayOf(0, 6, 3, 4),
-        intArrayOf(0, 5, 4, 5),
-        intArrayOf(6, 0, 1, 0)
-    )
-    r = 3
-    c = 1
-
-    board = arrayOf(
-        intArrayOf(1, 2, 2, 3),
-        intArrayOf(0, 0, 3, 0),
-        intArrayOf(0, 4, 0, 4),
-        intArrayOf(0, 0, 1, 0)
-    )
-    r = 0
-    c = 0
-
-    board = arrayOf(
-        intArrayOf(1, 0, 0, 3),
-        intArrayOf(0, 0, 3, 0),
-        intArrayOf(0, 2, 0, 2),
-        intArrayOf(0, 0, 1, 0)
-    )
-    r = 0
-    c = 0
-
-    board = arrayOf(
-        intArrayOf(6, 0, 0, 0),
-        intArrayOf(0, 0, 0, 0),
-        intArrayOf(0, 0, 0, 0),
-        intArrayOf(0, 0, 6, 0)
-    )
-    r = 2
-    c = 3
+//
+//    board = arrayOf(
+//        intArrayOf(3, 0, 0, 2),
+//        intArrayOf(0, 0, 1, 0),
+//        intArrayOf(0, 1, 0, 0),
+//        intArrayOf(2, 0, 0, 3)
+//    )
+//    r = 0
+//    c = 1
+//
+//    board = arrayOf(
+//        intArrayOf(1, 0, 0, 0),
+//        intArrayOf(0, 0, 0, 0),
+//        intArrayOf(0, 0, 0, 0),
+//        intArrayOf(0, 0, 1, 0)
+//    )
+//    r = 1
+//    c = 0
+//
+//
+//    board = arrayOf(
+//        intArrayOf(1, 2, 2, 3),
+//        intArrayOf(0, 6, 3, 4),
+//        intArrayOf(0, 5, 4, 5),
+//        intArrayOf(6, 0, 1, 0)
+//    )
+//    r = 3
+//    c = 1
+//
+//    board = arrayOf(
+//        intArrayOf(1, 2, 2, 3),
+//        intArrayOf(0, 0, 3, 0),
+//        intArrayOf(0, 4, 0, 4),
+//        intArrayOf(0, 0, 1, 0)
+//    )
+//    r = 0
+//    c = 0
+//
+//    board = arrayOf(
+//        intArrayOf(1, 0, 0, 3),
+//        intArrayOf(0, 0, 3, 0),
+//        intArrayOf(0, 2, 0, 2),
+//        intArrayOf(0, 0, 1, 0)
+//    )
+//    r = 0
+//    c = 0
+//
+//    board = arrayOf(
+//        intArrayOf(6, 0, 0, 0),
+//        intArrayOf(0, 0, 0, 0),
+//        intArrayOf(0, 0, 0, 0),
+//        intArrayOf(0, 0, 6, 0)
+//    )
+//    r = 2
+//    c = 3
     println(sol.solution(board, r, c))
 
     // Mutable 객체를 큐에 넣으면, 변화가 적용됨. 주의.
