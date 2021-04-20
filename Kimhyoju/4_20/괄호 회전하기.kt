@@ -11,14 +11,13 @@ fun main() {
 
         fun rotate(rot: Int, str: String): String {
             var sb = StringBuilder(str)
-            sb.append(str.substring(0,rot))
-            val res = sb.removeRange(0,rot)
+            sb.append(str.substring(0, rot))
+            val res = sb.removeRange(0, rot)
             println("rot: $rot, res: $res")
             return res.toString()
         }
 
         fun isValid(str: String): Boolean {
-            var res = false
             var stack = mutableListOf<Char>()
             for (s in str) {
                 if (stack.isEmpty()) stack.add(s)
@@ -36,7 +35,7 @@ fun main() {
     }
 
     val sol = Solution()
-    var s: String
+    var s = ""
     s = "[](){}"
     println("solution: ${sol.solution(s)}")
 }
