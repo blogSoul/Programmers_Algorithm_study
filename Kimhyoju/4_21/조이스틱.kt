@@ -59,5 +59,6 @@ fun main() {
     name = "JAN"
     name = "JEROEN"
     name = "BCAAAAAD"
+    name = "JAJAAAJ"
     println("solution: ${sol.solution(name)}")
 }
