@@ -1,7 +1,5 @@
 package `4_23`
 
-import Solution
-
 fun main() {
     class Solution {
         fun solution(n: Long): IntArray {
