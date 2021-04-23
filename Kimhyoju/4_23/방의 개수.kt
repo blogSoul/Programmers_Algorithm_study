@@ -21,6 +21,7 @@ fun main() {
         val visitedEdge: MutableMap<Pair<Pair<Int, Int>, Pair<Int, Int>>, Boolean> by lazy { mutableMapOf<Pair<Pair<Int, Int>, Pair<Int, Int>>, Boolean>() }
         val visitedVertex: MutableMap<Pair<Int,Int>, Boolean> by lazy { mutableMapOf<Pair<Int,Int>,Boolean>() }
         fun solution(arrows: IntArray): Int {
+
             val doubleArrows = mutableListOf<Int>()
             arrows.forEach { doubleArrows.addAll(listOf(it,it)) }
             var answer = 0
