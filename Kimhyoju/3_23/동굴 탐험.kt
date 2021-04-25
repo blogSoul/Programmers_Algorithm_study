@@ -36,7 +36,7 @@ fun main() {
         fun solution(n: Int, path: Array<IntArray>, order: Array<IntArray>): Boolean {
             var answer = false
 
-            edge = List(n) { mutableSetOf() }
+            edge = List(n) { mutableSetOf<Int>() }
             for (p in path) {
                 edge[p[0]].add(p[1])
                 edge[p[1]].add(p[0])

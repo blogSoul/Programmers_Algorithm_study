@@ -14,12 +14,12 @@ fun main() {
                 gemMap[gem] = gems.indexOfFirst { it == gem }
             }
             println(gemMap.values)
-            var max = gemMap.values.maxOrNull()!!.toInt()
-            var min = gemMap.values.minOrNull()!!.toInt()
+            var max = gemMap.values.max()!!.toInt()
+            var min = gemMap.values.min()!!.toInt()
             var minDist = max - min
             answer = intArrayOf(min + 1, max + 1)
             println("initial minDist: $minDist")
-//            answer = gemMap.values.minByOrNull { it }
+//            answer = gemMap.values.minBy { it }
             for ((idx, gem) in gems.withIndex()) {
                 if (gemMap[gem]!! < idx) {
 //                    println("modify gemMap[$gem]")
@@ -27,7 +27,7 @@ fun main() {
                     val before = gemMap[gem]
                     gemMap[gem] = idx
                     if (idx > max) max = idx
-                    if (before == min) min = gemMap.values.minOrNull()!!.toInt()
+                    if (before == min) min = gemMap.values.min()!!.toInt()
                 }
                 val dist = max - min
                 if (minDist > dist) {
@@ -37,7 +37,7 @@ fun main() {
             }
             println("final minDIst: $minDist")
             println("gemMap: $gemMap")
-            println("${gemMap.values.minOrNull()} ${gemMap.values.maxOrNull()}")
+            println("${gemMap.values.min()} ${gemMap.values.max()}")
             println("answer: ${answer.toList()}")
             return answer
         }

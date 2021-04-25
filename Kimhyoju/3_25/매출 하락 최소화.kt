@@ -72,7 +72,7 @@ fun main() {
             dfs(members[0])
             println(dp.map { it.toList() }.toList())
 
-            answer = dp[0].minOrNull()?:Int.MAX_VALUE
+            answer = dp[0].min()?:Int.MAX_VALUE
             return answer
         }
 

@@ -26,7 +26,7 @@ class Solution {
             queue.addAll(temp)
             temp.clear()
             while (queue.isNotEmpty() && answer == 0) {
-                val newWord = queue.first().also { queue.removeFirst() }
+                val newWord = queue.first().also { queue.removeAt(0) }
 
                 // 1. target 에 가까워지는 word 찾기.
                 // words에서 target과 문자 1개라도 겹치는 것을 찾음으로써 target에 가까워지는 로직을 구현하려다가,

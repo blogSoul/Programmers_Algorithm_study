@@ -70,7 +70,7 @@ fun main() {
         arrayOf("ICN", "ATL"),
         arrayOf("SFO", "ATL"),
         arrayOf("ATL", "ICN"),
-        arrayOf("ATL", "SFO"),
+        arrayOf("ATL", "SFO")
     )
     sol.solution(tickets)
 }

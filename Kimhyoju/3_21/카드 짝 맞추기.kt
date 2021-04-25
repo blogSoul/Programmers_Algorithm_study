@@ -53,7 +53,7 @@ fun main() {
             }
             println("cardSet: $cardSet")
 
-            val cardPosition = List(cardSet.maxOrNull()!!.toInt() + 1) { mutableListOf<Pair<Int, Int>>() }
+            val cardPosition = List(cardSet.max()!!.toInt() + 1) { mutableListOf<Pair<Int, Int>>() }
             for (i in board.indices) {
                 for (j in board[0].indices) {
                     if (board[i][j] != 0) {
