@@ -39,7 +39,7 @@ package `4_23`
 // 그럼 나 리턴값 써도 되는거야? >.<
 // 된다!
 
-// 일단, Int를 안쓰고 Long을 쓰니까 통과는 하는데... 2개가 런타임 에러가 뜬다. 뭐지..?
+// 일단, Int를 안쓰고 Long을 쓰니까 통과는 하는데... 7,8 2개가 런타임 에러가 뜬다. 뭐지..?
 // 설마 여기서 DFS Depth 문제가 나는 건가?
 
 // 그렇다. StackOverflowError는 프로그래머스에서는 런타임 에러 라고만 뜬다... 메모리 초과는 그대로 뜨고..
@@ -70,6 +70,10 @@ package `4_23`
 
 // 채점에 문제가 있다는 의견이 많다. 일단 배워갔으니 만족.
 
+
+// 하... weight를 Int로 해놓고 값을 갱신하니까, Int보다 큰게 오면 당연히 답이 틀려진다...
+// 채점 문제가 아니다. 그냥 내가 바보였던 것. 자료형을 항상 조심하자!
+
 import java.util.*
 import kotlin.math.abs
 
@@ -77,10 +81,10 @@ fun main() {
     data class Node(val curNode: Int, val parent: Int)
     class Solution {
         lateinit var adj: MutableList<MutableList<Int>>
-        lateinit var weight: MutableList<Int>
+        lateinit var weight: MutableList<Long>
         fun mySolution(a: IntArray, edges: Array<IntArray>): Long {
             var answer = 0L
-            weight = a.toMutableList()
+            weight = a.map{it.toLong()}.toMutableList()
             adj = MutableList(a.size) { mutableListOf<Int>() }
             for (e in edges) {
                 adj[e[0]].add(e[1])
@@ -116,7 +120,7 @@ fun main() {
         }
 
         fun solution(a: IntArray, edges: Array<IntArray>): Long {
-            weight = a.toMutableList()
+            weight = a.map{it.toLong()}.toMutableList()
             adj = MutableList(a.size) { mutableListOf<Int>() }
             for (e in edges) {
                 adj[e[0]].add(e[1])
