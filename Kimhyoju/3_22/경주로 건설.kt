@@ -107,7 +107,7 @@ fun main() {
     board = arrayOf(
         intArrayOf(0, 0, 0),
         intArrayOf(0, 0, 0),
-        intArrayOf(0, 0, 0),
+        intArrayOf(0, 0, 0)
     )
     board = arrayOf(
         intArrayOf(0, 0, 0, 0, 0, 0, 0, 1),

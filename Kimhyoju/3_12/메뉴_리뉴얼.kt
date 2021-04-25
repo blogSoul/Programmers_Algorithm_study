@@ -29,7 +29,7 @@ class Solution3 {
                 }
             }
             println("orderMap: $orderMap")
-            val maxVal = orderMap.maxByOrNull { it.value }?.value
+            val maxVal = orderMap.maxBy{ it.value }?.value
             if (maxVal != null) {
                 if (maxVal >= 2) {
                     val maxList = orderMap.filter {
