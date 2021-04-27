@@ -33,41 +33,100 @@ package `4_26`
 // 결국 구글링함.
 // 이건 구간 합으로, 세그먼트 트리를 활용하는 문제였다....
 // 세그먼트 트리를 구현해보자.
+// "구간 합"
+// 트리의 공간을 할당할 때는, 데이터의 개수 N에 4를 곱한만큼 미리 할당한다.
+// 구현을 몰라서 보면서 코드를 썼다. 풀고 나중에 다시 풀어보자.
+
+// 이 문제는 일반적인 구간합 문제와는 전혀 다르다.
+// 일반적인 구간합은, data[4~8]을 구할 때, data[6~8] + data[4] + data[5] 인데, 이 문제는 그렇지 않다....
 
 fun main() {
+    data class Node(var str: String, var value: Long) {
+        var parent: Node? = null
+        var left: Node? = null
+        var right: Node? = null
+    }
+
+    class SegmentTree(n: Int) {
+        //        var data = mutableListOf<Node>(Node("", 0))
+        var data = MutableList<Node>(n * 4) { Node("", 0) }
+    }
+
     class Solution {
-        val strMap = mutableMapOf<String,Long>()
+        lateinit var segmentTree: SegmentTree
+        var string = ""
         fun solution(s: String): Long {
             if (s.toSet().size == 1) return 0L
+            string = s
             var answer: Long = 0
+            segmentTree = SegmentTree(s.length)
+            initTree(0, s.lastIndex, 1)
+            println(segmentTree.data)
+
             for (wSize in 2..s.length) {
                 for (idx in s.indices) {
                     if (idx + wSize > s.length) break
-                    val subStr = s.substring(idx, idx + wSize)
-                    println("subStr: $subStr")
-                    answer += getBeauty(subStr)
+                    val (left, right) = Pair(idx, idx + wSize)
+                    val subStr = s.substring(idx,idx+wSize)
+                    val sum = sum(0,s.lastIndex,1,left,right)
+                    println("subStr: $subStr sum: $sum")
                 }
             }
+
             return answer
         }
-        fun dfs(str: String) {
 
+        fun normalInitTree(start: Int, end: Int, index: Int): Long {
+            if (start == end) {
+                segmentTree.data[index] = Node(string[start].toString(), 0)
+                println("str: ${string.substring(start..end)} index: $index = 0")
+                return 0
+            } else if (start + 1 == end) {
+                val res = getBeauty(string.substring(start..end))
+                println("str: ${string.substring(start..end)} index: $index = $res")
+                return res
+            }
+            val mid = (start + end) / 2
+            val sum = normalInitTree(start, mid, index * 2) + normalInitTree(mid + 1, end, index * 2 + 1)
+            println("str: ${string.substring(start..end)} index: $index = $sum")
+            return sum
+        }
+
+        fun initTree(start: Int, end: Int, index: Int) {
+            val str = string.substring(start..end)
+            if (end - start <= 1) {
+                segmentTree.data[index] = Node(str, getBeauty(str))
+                println("str: $str index: $index = ${segmentTree.data[index]}")
+                return
+            }
+            val mid = (start + end) / 2
+            val node1 = initTree(start, mid, index * 2)
+            val node2 = initTree(mid + 1, end, index * 2 + 1)
+            segmentTree.data[index] = Node(str, getBeauty(str))
+            println("str: $str index: $index = ${segmentTree.data[index]}")
+        }
+
+        fun sum(start: Int, end: Int, index: Int, left: Int, right: Int): Long {
+            // 범위 밖에 있는 경우
+            if (left > end || right < start) return 0L
+            // 범위 안에 있는 경우
+            if (left <= start && right >= end) return segmentTree.data[index].value
+            // 그렇지 않으면 두 부분으로 나누어 합을 더하기
+            val mid = (start + end) / 2
+            val sum = sum(start, mid, index * 2, left, right) + sum(mid + 1, end, index * 2 + 1, left, right)
+            return sum
         }
 
         fun getBeauty(str: String): Long {
             if (str.toSet().size == 1) return 0L
             if (str.length == 2) return 1L
-            if (strMap.containsKey(str)) return strMap[str]!!
             var res = 0L
             for (end in str.lastIndex downTo 1) {
                 var j = end
                 for (start in str.indices) {
                     if (j > str.lastIndex) break // max = end
                     if (str[start] != str[j]) {
-//                        res = (j - start).toLong()
-//                        break
-                        strMap[str] = end.toLong()
-                        return strMap[str]!!
+                        return end.toLong()
                     }
                     j++
                 }
@@ -78,7 +137,7 @@ fun main() {
         }
     }
 
-    var s = "baby"
+    var s = "abcdab"
 //    s = "abbca"
     println("solution: ${Solution().solution(s)}")
 }
