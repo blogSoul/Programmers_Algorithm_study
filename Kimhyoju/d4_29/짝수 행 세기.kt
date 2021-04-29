@@ -1,4 +1,4 @@
-package d4_28
+package d4_29
 
 // 비트마스킹을 연습해보자
 // shl 은 1할때마다 2배 증가. 이건 비트연산뿐만 아니라, 일반 연산에서도 유용하게 쓰일 것 같다.
@@ -7,20 +7,15 @@ package d4_28
 // ushr 은 부호없음 오른쪽 이동
 // and, or, xor, inv()
 
+// 근데, 행의 개수와, 각 행의 길이는 300 이하니까, Long 비트여도 64비트밖에 표현이 안되니,
+// 비트마스킹으론 힘들 것 같은데..?
+
 fun main() {
     class Solution {
         fun solution(a: Array<IntArray>): Int {
             var answer: Int = -1
             val horLen = a[0].size
             val verLen = a.size
-            var row = 0b0011
-            println("row: $row")
-            row = row shl 2
-            println("row: $row")
-            row = row shr 3
-            println("row: $row")
-            var r = 63
-            println(r shl 2)
             return answer
         }
     }
