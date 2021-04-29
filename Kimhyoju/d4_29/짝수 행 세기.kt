@@ -10,6 +10,8 @@ package d4_29
 // 근데, 행의 개수와, 각 행의 길이는 300 이하니까, Long 비트여도 64비트밖에 표현이 안되니,
 // 비트마스킹으론 힘들 것 같은데..?
 
+// 그냥 구글링함
+
 fun main() {
     class Solution {
         fun solution(a: Array<IntArray>): Int {
