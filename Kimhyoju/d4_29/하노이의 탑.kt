@@ -41,15 +41,15 @@ fun main() {
         }
         fun hanoi(n: Int, start: Int, to: Int, via: Int) {
             if (n == 1) {
-                answer.add(listOf(start,to))
+                move(start,to)
                 return
             }
             hanoi(n-1,start,via,to)
-            answer.add(listOf(start,to))
+            move(start,to)
             hanoi(n-1,via,to,start)
         }
-        fun move(n: Int, start: Int, to: Int) {
-
+        fun move(start: Int, to: Int) {
+            answer.add(listOf(start,to))
         }
 
         fun mySolution(n: Int): Array<IntArray> {
