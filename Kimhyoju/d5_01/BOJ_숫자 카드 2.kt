@@ -48,6 +48,7 @@ fun main() {
     val bw = BufferedWriter(OutputStreamWriter(System.`out`))
     val n = br.readLine().toInt()
     cards = br.readLine().split(" ").map { it.toInt() }.sorted()
+    println("\ncards: $cards")
     val m = br.readLine().toInt()
     val targets = br.readLine().split(" ").map { it.toInt() }
     br.close()
@@ -66,9 +67,10 @@ fun lowerBound(target: Int): Int {
     var high = cards.size // size -1 이 아닌, size
     while (low < high) {
         val mid = (low + high) / 2
-        if (target <= cards[mid]) high = mid
+        if (target <= cards[mid]) high = mid // mid-1 이면 안됨. mid-1이 target이 아닐 수 있기 때문.
         else low = mid + 1
     }
+    println("lowerBound low: $low, high: $high")
     return low
 }
 
@@ -83,8 +85,9 @@ fun upperBound(target: Int): Int {
     while (low < high) {
         val mid = (low + high) / 2
         if (target >= cards[mid]) low = mid + 1
-        else high = mid
+        else high = mid // mid -1이면 안됨. mid-1이 target이 아닐 수 있기 때문
     }
+    println("upperBound low: $low, high: $high")
     return low
 }
 
