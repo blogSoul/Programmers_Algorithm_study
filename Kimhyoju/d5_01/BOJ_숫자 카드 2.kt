@@ -18,6 +18,7 @@ package d5_01
 // 리턴되어야 하기 때문에 high = array.length -1 이 아니고 high = array.length로 지정 해야 한다.
 // 그리고 탐색한 값이  주어진 값보다 크거나 같으면 바로 리턴하지않고 같거나 처음으로 나오는 값을 찾기위해 범위를 더 좁히면서 찾아간다.
 // 크거나 같은경우 high = mid 로 지정해서 범위를 좀더 좁혀 나가면서 찾아가는 것이다.
+// lowerbound는 x값이 처음 나오는 인덱스, upperbound는 x를 초과한 값이 처음 나오는 인덱스.
 
 
 import java.io.BufferedReader
@@ -37,7 +38,7 @@ fun mainWithNaiveBinarySearch() {
         var left = 0
         var right = n - 1
         var mid = 0
-        var res = binarySearch(left, right, target)
+        var res = binarySearchRecursive(left, right, target)
         bw.write("$res ")
     }
     bw.close()
@@ -84,23 +85,35 @@ fun upperBound(target: Int): Int {
     var high = cards.size // size -1 이 아닌, size
     while (low < high) {
         val mid = (low + high) / 2
-        if (target >= cards[mid]) low = mid + 1
-        else high = mid // mid -1이면 안됨. mid-1이 target이 아닐 수 있기 때문
+        if (target < cards[mid]) high = mid // mid -1이면 안됨. 찾으려는건 target 보다 큰 바로 다음 수이므로, 현재를 포함해야함.
+        else low = mid + 1
     }
     println("upperBound low: $low, high: $high")
     return low
 }
 
-fun binarySearch(left: Int, right: Int, target: Int): Int {
+fun binarySearchRecursive(left: Int, right: Int, target: Int): Int {
     if (left > right) return 0
     var res = 0
     var mid = (left + right) / 2
-    if (cards[mid] > target) res = binarySearch(left, mid - 1, target)
-    else if (cards[mid] < target) res = binarySearch(mid + 1, right, target)
+    if (cards[mid] > target) res = binarySearchRecursive(left, mid - 1, target)
+    else if (cards[mid] < target) res = binarySearchRecursive(mid + 1, right, target)
     else {
         res++
-        res += binarySearch(left, mid - 1, target)
-        res += binarySearch(mid + 1, right, target)
+        res += binarySearchRecursive(left, mid - 1, target)
+        res += binarySearchRecursive(mid + 1, right, target)
     }
     return res
+}
+
+fun binarySearch(_left: Int, _right: Int, target: Int): Boolean { // 오직 한 값이 존재하는지 안하는지.
+    var left = _left
+    var right = _right
+    while (left < right) {
+        var mid = (left + right) / 2
+        if (target > cards[mid]) left = mid + 1
+        else if (target < cards[mid]) right = mid - 1
+        else return true
+    }
+    return false
 }
