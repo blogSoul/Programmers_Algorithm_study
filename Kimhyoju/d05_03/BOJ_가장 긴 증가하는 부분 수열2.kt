@@ -4,6 +4,7 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.util.*
 
 // 수열을 만들어보고, 수열의 원소들간의 차도 확인해보고, 정렬도 해봤는데 모르겠다..
 // 인덱스와 값을 Pair로해서 정렬하는 건가..?
@@ -25,15 +26,23 @@ class 가장긴증가하는부분수열2 {
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val n = br.readLine().toInt()
         val sequence = br.readLine().split(" ").map { it.toInt() }
-
-        var left = 0
-        var right = sequence.size
-        while (left <= right) {
-            val mid = (left + right) / 2
+        val stack = Stack<Int>()
+        for (num in sequence) {
+            if (stack.isEmpty() || num > stack.peek()) stack.push(num)
+            else stack[lowerBound(stack,num)] = num
         }
-
-        bw.write("$sequence")
+        bw.write("${stack.size}")
         bw.close()
+    }
+    fun lowerBound(stack: Stack<Int>, target: Int): Int {
+        var low = 0
+        var high = stack.lastIndex
+        while (low < high) {
+            val mid = (low+high)/2
+            if (stack[mid] >= target) high = mid
+            else low = mid+1
+        }
+        return low
     }
 }
 
