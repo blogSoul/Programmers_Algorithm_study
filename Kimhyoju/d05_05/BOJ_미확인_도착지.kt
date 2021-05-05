@@ -28,63 +28,68 @@ import java.util.*
 
 // 음... 고민좀 해봐야겠다.
 
+// 계속 거리의 비교의 틀 안에서 생각을 하느라 처음엔 이해가 안갔는데, 조언자는 거리의 비교를 이용하는 게 아니었다.
+// 시작점부터 모든 점까지 다익스트라를 돌리고 만약 g-h를 거치면 그때부터 pq와 isVia를 이용해 꼬리표를 붙이는 것.
+// 다익스트라를 돌린 결과, 후보지로의 최소거리를 구한 것중에 꼬리표가 붙어있으면, 즉 isVia 가 true인 것이면 g-h를 거쳤다는 게 된다는 것.
+
 class BOJ_미확인_도착지 {
     private lateinit var adj: Array<MutableList<Pair<Int, Int>>>
-    var n = 0
+    private lateinit var dist: IntArray
+    private lateinit var isVia: BooleanArray
+    private lateinit var visited: BooleanArray
     fun main() {
         val br = BufferedReader(InputStreamReader(System.`in`))
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val test = br.readLine().toInt()
         for (testCnt in 1..test) {
-            val answer = PriorityQueue<Int>()
-            val (_n, m, t) = br.readLine().split(" ").map { it.toInt() }
-            n = _n
+            val (n, m, t) = br.readLine().split(" ").map { it.toInt() }
             val (s, g, h) = br.readLine().split(" ").map { it.toInt() }
             adj = Array(n + 1) { mutableListOf<Pair<Int, Int>>() }
+            dist = IntArray(n + 1) { Int.MAX_VALUE }
+            isVia = BooleanArray(n + 1)
+            visited = BooleanArray(n + 1)
             for (mCnt in 1..m) {
                 val (a, b, d) = br.readLine().split(" ").map { it.toInt() }
                 adj[a].add(Pair(b, d))
                 adj[b].add(Pair(a, d))
             }
-            val candidates = mutableListOf<Int>()
+            val candidates = PriorityQueue<Int>()
             for (tCnt in 1..t) {
-                candidates.add(br.readLine().toInt())
+                candidates.offer(br.readLine().toInt())
             }
-            for (c in candidates) {
-                val destDist = dijkstra(s, c)
-                val gViaH = dijkstra(g, h)
-                if (dijkstra(s, g) + gViaH + dijkstra(h, c) == destDist) {
-                    answer.offer(c)
-                } else if (dijkstra(s, h) + gViaH + dijkstra(g, c) == destDist) {
-                    answer.offer(c)
-                }
+            dijkstra(s, g, h)
+            while (candidates.isNotEmpty()) {
+                val c = candidates.poll()
+                if (isVia[c]) bw.write("$c ")
             }
-            while (answer.isNotEmpty()) bw.write("${answer.poll()} ")
             bw.write("\n")
         }
         br.close()
         bw.close()
     }
 
-    fun dijkstra(start: Int, end: Int): Int {
-        val dist = IntArray(n + 1) { Int.MAX_VALUE }
-        dist[start] = 0
-        val visited = BooleanArray(n + 1)
+    private fun dijkstra(start: Int, g: Int, h: Int) {
         visited[0] = true
-        val pq = PriorityQueue<Pair<Int, Int>>(compareBy { it.second })
-        pq.offer(Pair(start, 0))
+        val pq = PriorityQueue<List<Int>>(compareBy<List<Int>> { it[1] }.thenByDescending { it[2] })
+        pq.offer(listOf(start, 0, 0))
         while (pq.isNotEmpty()) {
-            val (vertex, weight) = pq.poll()
+            val (vertex, weight, via) = pq.poll()
             visited[vertex] = true
+            dist[vertex] = weight
+            when (via) {
+                0 -> isVia[vertex] = false
+                else -> isVia[vertex] = true
+            }
             for ((v, w) in adj[vertex]) {
                 if (visited[v]) continue
-                if (dist[v] > dist[vertex] + w) {
+                if (dist[v] >= dist[vertex] + w) { // > 가 아니라 >=인 이유는 같은 cost가 이미 있어도 g-h 통과 노드는 넣어야함.
                     dist[v] = dist[vertex] + w
-                    pq.offer(Pair(v, dist[v]))
+                    if (listOf(vertex, v) == listOf(g, h) || listOf(vertex, v) == listOf(h, g)) { // g-h 통과하면
+                        pq.offer(listOf(v, weight + w, 1))
+                    } else pq.offer(listOf(v, weight + w, via))
                 }
             }
         }
-        return dist[end]
     }
 }
 
