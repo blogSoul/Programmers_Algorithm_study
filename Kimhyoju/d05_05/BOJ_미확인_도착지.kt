@@ -15,55 +15,48 @@ import java.util.*
 // 접근법은 틀리지 않은 것 같은데 시간초과... 음... 다익스트라를 쓰라는 건가.
 
 class BOJ_미확인_도착지 {
+    private lateinit var adj: Array<MutableList<Pair<Int, Int>>>
+    var n = 0
     fun main() {
         val br = BufferedReader(InputStreamReader(System.`in`))
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val test = br.readLine().toInt()
         for (testCnt in 1..test) {
             val answer = PriorityQueue<Int>()
-            val (n, m, t) = br.readLine().split(" ").map { it.toInt() }
+            val (_n, m, t) = br.readLine().split(" ").map { it.toInt() }
+            n = _n
             val (s, g, h) = br.readLine().split(" ").map { it.toInt() }
-            val floydDist = Array(n + 1) { IntArray(n + 1) { Int.MAX_VALUE } }
-            floydDist.forEachIndexed { idx, arr -> arr[idx] = 0 }
+            adj = Array(n + 1) { mutableListOf<Pair<Int, Int>>() }
             for (mCnt in 1..m) {
                 val (a, b, d) = br.readLine().split(" ").map { it.toInt() }
-                floydDist[a][b] = d
-                floydDist[b][a] = d
+                adj[a].add(Pair(b, d))
+                adj[b].add(Pair(a, d))
             }
             val candidates = mutableListOf<Int>()
             for (tCnt in 1..t) {
                 candidates.add(br.readLine().toInt())
             }
-            for (mid in 1..n) {
-                for (start in 1..n) {
-                    for (end in 1..n) {
-                        if (floydDist[start][mid] != Int.MAX_VALUE && floydDist[mid][end] != Int.MAX_VALUE) {
-                            if (floydDist[start][end] > floydDist[start][mid] + floydDist[mid][end]) {
-                                floydDist[start][end] = floydDist[start][mid] + floydDist[mid][end]
-                            }
-                        }
-                    }
-                }
-            }
             for (c in candidates) {
-                if (floydDist[s][g] + floydDist[g][h] + floydDist[h][c] == floydDist[s][c]) {
+                val destDist = dijkstra(s, c)
+                val gViaH = dijkstra(g, h)
+                if (dijkstra(s, g) + gViaH + dijkstra(h, c) == destDist) {
                     answer.offer(c)
-                } else if (floydDist[s][h] + floydDist[h][g] + floydDist[g][c] == floydDist[s][c]) {
+                } else if (dijkstra(s, h) + gViaH + dijkstra(g, c) == destDist) {
                     answer.offer(c)
                 }
             }
             while (answer.isNotEmpty()) bw.write("${answer.poll()} ")
             bw.write("\n")
-            println(floydDist.map{it.toList()})
         }
         br.close()
         bw.close()
     }
 
-    private lateinit var adj: Array<MutableList<Pair<Int, Int>>>
-    private lateinit var dist: IntArray
-    private lateinit var visited: BooleanArray
-    fun dijkstra(start: Int) {
+    fun dijkstra(start: Int, end: Int): Int {
+        val dist = IntArray(n + 1) { Int.MAX_VALUE }
+        dist[start] = 0
+        val visited = BooleanArray(n + 1)
+        visited[0] = true
         val pq = PriorityQueue<Pair<Int, Int>>(compareBy { it.second })
         pq.offer(Pair(start, 0))
         while (pq.isNotEmpty()) {
@@ -77,6 +70,7 @@ class BOJ_미확인_도착지 {
                 }
             }
         }
+        return dist[end]
     }
 }
 
