@@ -45,13 +45,13 @@ import java.io.OutputStreamWriter
 
 class BOJ_타임머신 {
     private lateinit var edges: MutableList<List<Int>>
-    private lateinit var dist: IntArray
+    private lateinit var dist: LongArray
     fun main() {
         val br = BufferedReader(InputStreamReader(System.`in`))
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val (n, m) = br.readLine().split(" ").map { it.toInt() }
         edges = mutableListOf()
-        dist = IntArray(n + 1) { Int.MAX_VALUE }
+        dist = LongArray(n + 1) { Int.MAX_VALUE.toLong() }
         for (i in dist.indices) dist[0] = 0
         repeat(m) {
             val (a, b, c) = br.readLine().split(" ").map { it.toInt() }
@@ -62,7 +62,7 @@ class BOJ_타임머신 {
         else {
             for (i in 1..n) {
                 if (i == 1) continue
-                if (dist[i] == Int.MAX_VALUE) bw.write("-1\n")
+                if (dist[i] == Int.MAX_VALUE.toLong()) bw.write("-1\n")
                 else bw.write("${dist[i]}\n")
             }
         }
@@ -79,7 +79,7 @@ class BOJ_타임머신 {
             // 다익스트라는 정점을 기준으로 최단경로를 찾았지만, 벨만포드는 간선을 기준으로 찾는다.
             for ((a, b, c) in edges) {
                 // 현재 간선을 거쳐서 다른 노드로 이동하는 거리가 더 짧은 경우
-                if (dist[a] != Int.MAX_VALUE && dist[b] > dist[a] + c) {
+                if (dist[a] != Int.MAX_VALUE.toLong() && dist[b] > dist[a] + c) {
                     dist[b] = dist[a] + c
                     if (i == n) return true
                 }
