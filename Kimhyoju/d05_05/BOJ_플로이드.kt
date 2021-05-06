@@ -13,6 +13,7 @@ class BOJ_플로이드 {
         val m = br.readLine().toInt()
         val dist = Array(n + 1) { IntArray(n + 1) { Int.MAX_VALUE } }
         dist.forEachIndexed { idx, arr -> arr[idx] = 0 }
+        // 윗줄은 생략하면, 사이클을 찾을 수 있다. (음의 사이클은 안됨.)
         for (mCnt in 0 until m) {
             val (a, b, c) = br.readLine().split(" ").map { it.toInt() }
             dist[a][b] = minOf(dist[a][b],c)
