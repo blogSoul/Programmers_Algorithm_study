@@ -50,32 +50,20 @@ class BOJ_토마토3D {
             visited[z][y][x] = 1
             if (box[z][y][x] == -1) continue
             box[z][y][x] = 1
-            // left
-            if (y - 1 >= 0 && visited[z][y - 1][x] != 1) {
-                queue.offer(Tomato(listOf(z, y - 1, x), count + 1))
-            }
-            // right
-            if (y + 1 < b && visited[z][y + 1][x] != 1) {
-                queue.offer(Tomato(listOf(z, y + 1, x), count + 1))
-            }
-            // up
-            if (x - 1 >= 0 && visited[z][y][x - 1] != 1) {
-                queue.offer(Tomato(listOf(z, y, x - 1), count + 1))
-            }
-            // down
-            if (x + 1 < a && visited[z][y][x + 1] != 1) {
-                queue.offer(Tomato(listOf(z, y, x + 1), count + 1))
-            }
-            // ascend
-            if (z - 1 >= 0 && visited[z - 1][y][x] != 1) {
-                queue.offer(Tomato(listOf(z - 1, y, x), count + 1))
-            }
-            // descend
-            if (z + 1 < c && visited[z + 1][y][x] != 1) {
-                queue.offer(Tomato(listOf(z + 1, y, x), count + 1))
+            val zList = listOf(1, -1, 0, 0, 0, 0)
+            val yList = listOf(0, 0, 1, -1, 0, 0)
+            val xList = listOf(0, 0, 0, 0, 1, -1)
+            for (i in zList.indices) {
+                val nz = z + zList[i]
+                val ny = y + yList[i]
+                val nx = x + xList[i]
+                if (nz in 0 until c && ny in 0 until b && nx in 0 until a && visited[nz][ny][nx] != 1) {
+                    queue.offer(Tomato(listOf(nz, ny, nx), count + 1))
+                }
             }
             if (answer < count) answer = count
         }
+        println(visited.map{it.map{arr -> arr.toList()}})
         if (box.any { arr1 -> arr1.any { arr2 -> arr2.any { it == 0 } } }) bw.write("-1")
         else bw.write("$answer")
         bw.close()

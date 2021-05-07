@@ -33,25 +33,18 @@ class BOJ_토마토 {
             if (box[x][y] == -1) continue
             box[x][y] = 1
             println("x: $x, y: $y")
-            // left
-            if (y - 1 >= 0 && visited[x][y - 1] != 1) {
-                queue.offer(Tomato(Pair(x, y - 1), count + 1))
+            val xList = listOf(0, 0, 1, -1)
+            val yList = listOf(1, -1, 0, 0)
+            for (i in xList.indices) {
+                val nx = x + xList[i]
+                val ny = y + yList[i]
+                if (ny in 0 until a && nx in 0 until b && visited[nx][ny] != 1) {
+                    queue.offer(Tomato(Pair(nx, ny), count + 1))
+                }
             }
-            // right
-            if (y + 1 < a && visited[x][y + 1] != 1) {
-                queue.offer(Tomato(Pair(x, y + 1), count + 1))
-            }
-            // up
-            if (x - 1 >= 0 && visited[x - 1][y] != 1) {
-                queue.offer(Tomato(Pair(x - 1, y), count + 1))
-            }
-            // down
-            if (x + 1 < b && visited[x + 1][y] != 1) {
-                queue.offer(Tomato(Pair(x + 1, y), count + 1))
-            }
-            answer = count
+            if (answer < count) answer = count
         }
-//        println("visited: ${visited.map { it.toList() }}")
+        println("visited: ${visited.map { it.toList() }}")
         if (box.any { arr -> arr.any { it == 0 } }) bw.write("-1")
         else bw.write("$answer")
         bw.close()
