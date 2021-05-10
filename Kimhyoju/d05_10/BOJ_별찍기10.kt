@@ -5,17 +5,19 @@ import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
+// 문제 이해하고, 파악한 법칙 적용하는 데에 오래걸림.
+
 class BOJ_별찍기10 {
-    val bw = BufferedWriter(OutputStreamWriter(System.`out`))
     lateinit var stars: Array<CharArray>
     fun main() {
         val br = BufferedReader(InputStreamReader(System.`in`))
+        val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val n = br.readLine().toInt()
         br.close()
         stars = Array(n) { CharArray(n) }
         dfs(n, 0, 0)
         for (i in stars.indices) {
-            stars[i].forEach { bw.write("$it ") }
+            stars[i].forEach { bw.write("$it") }
             bw.write("\n")
         }
         bw.close()
@@ -36,22 +38,21 @@ class BOJ_별찍기10 {
             return
         }
         for (i in 0 until 3) {
-            dfs(n / 3, x + n / 3, n / 3 * (y + i))
+            dfs(n / 3, x, y + n / 3 * (i))
 //            dfs(n / 3, n / 3 * x, y + n / 3 * (i))
         }
-        dfs(n / 3, x+1 + n / 3, n / 3 * (y + i))
-        /**/dfs(n / 3, n / 3 * (x + 1), y + n / 3)
-        for (i in n / 3 * (x + 1) until (n / 3) * (x + 2)) {
-            for (j in n / 3 * (y + 1) until (n / 3) * (y + 2)) {
+//        dfs(n / 3, x+1 + n / 3, n / 3 * (y + i))
+        dfs(n / 3, x + n / 3, y)
+        for (i in x + n / 3 until x + n / 3 * 2) {
+            for (j in y + n / 3 until y + (n / 3) * 2) {
                 stars[i][j] = ' '
             }
         }
-        dfs(n / 3, n / 3 * (x + 1), y + 2 + n / 3)
+        dfs(n / 3, x + n / 3, y + n / 3 * 2)
 //        dfs(n / 3, x + 1 + n / 3, y + 2 + n / 3)
         for (i in 0 until 3) {
+            dfs(n / 3, x + n / 3 * 2, y + (n / 3) * (i))
 //            dfs(n / 3, n / 3 * (x + 2), n / 3 * (y + i))
-            dfs(n / 3, n / 3 * (x + 2), y + n / 3 * (i))
-
         }
     }
 }
