@@ -60,7 +60,7 @@ class BOJ_트리의_순회 {
 
     fun preOrder(inLeft: Int, inRight: Int, posLeft: Int, posRight: Int) {
         if (posRight > posRight || inLeft > inRight) return
-        println("inLeft: $inLeft, inRight: $inRight, posLeft: $posLeft, posRight: $posRight")
+//        println("inLeft: $inLeft, inRight: $inRight, posLeft: $posLeft, posRight: $posRight")
         val root = postOrder[posRight]
         val ioRootIdx = ioMap[root]!!.toInt()
         //left
@@ -73,27 +73,8 @@ class BOJ_트리의_순회 {
         preOrder(ioRootIdx + 1, inRight, posLeft + leftSize, posRight - 1)
     }
 
-    fun preOrder2(left: Int, right: Int) {
-        visit(right)
-        if (left == right) return
-        val sublist = postOrder.subList(left, right)
-        val leftRight = sublist.indexOfLast { it < postOrder[right] } // 서브리스트와 postOrder 인덱스가 달라서 문제가 생김.
-        if (leftRight != -1) {
-//            println("calling left preOrder $left, $leftRight in $left $right")
-            preOrder2(left, left + leftRight)
-        }
-        val rightLeft = sublist.indexOfFirst { it > postOrder[right] }
-        if (rightLeft == 7) {
-//            println("rightLeft is 7. $left $right")
-        }
-        if (rightLeft != -1) {
-//            println("calling right preOrder $rightLeft, ${right - 1} in $left $right")
-            preOrder2(left + rightLeft, right - 1)
-        }
-    }
-
     fun visit(a: Int) {
-        println("visit ${postOrder[a]}")
+//        println("visit ${postOrder[a]}")
         bw.write("${postOrder[a]} ")
     }
 }
