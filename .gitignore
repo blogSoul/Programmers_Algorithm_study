@@ -8,7 +8,6 @@ Kimhyoju/boilerplate/
 Kimhyoju/privateLab/
 Kimhyoju/d04_30/skillcheck_level_3
 Kimhyoju/d05_08/kakaocodingtest
-Kimhyoju/Kimhyoju.iml
-Programmers_Algorithm_study.iml
+*.iml
 Cookyr/CodingPractice/
 .vs/
