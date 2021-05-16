@@ -1,9 +1,10 @@
-package d05_14
+package d05_16
 
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.util.*
 
 // 플로이드 와샬을 돌렸더니 메모리 초과.
 // 한 점에서 각 이웃노드로 DFS로 돌린 합을 찾으면 될거라 생각했는데, 아니었다.
@@ -29,63 +30,64 @@ import java.io.OutputStreamWriter
 
 class BOJ_트리의_지름 {
     lateinit var adj: Array<MutableList<Pair<Int, Int>>>
-
-    lateinit var visited: BooleanArray
     var max = 0
     var maxNode = 0
+    var v1 = 0
+    var v2 = 0
+    var answer = 0
     fun main() {
         val br = BufferedReader(InputStreamReader(System.`in`))
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val n = br.readLine().toInt()
         adj = Array(n + 1) { mutableListOf<Pair<Int, Int>>() }
-        visited = BooleanArray(n + 1)
-        repeat(n) {
+        repeat(n - 1) {
             val vList = br.readLine().split(" ").map { it.toInt() }
             for (i in 1 until vList.size step 2) {
                 if (vList[i] == -1) break
                 val start = vList.first()
                 adj[start].add(Pair(vList[i], vList[i + 1]))
+                adj[vList[1]].add(Pair(start, vList[i + 1]))
             }
         }
         var root = 1
-        visited = BooleanArray(n + 1)
-        visited[root] = true
-        for ((node, count) in adj[root]) {
-            dfs(node, count)
-//            println("node: $node, max: $max, maxIdx: $maxNode")
-        }
 
-//        println("root = $maxNode")
+        dijkstra(root, n)
+        v1 = maxNode
         root = maxNode
-        max = 0
-        maxNode = 0
-        visited = BooleanArray(n + 1)
-        visited[root] = true
-        for ((node, count) in adj[root]) {
-            dfs(node, count)
-//            println("node: $node, max: $max, maxNode: $maxNode")
-        }
-        var answer = max
+        dijkstra(root, n)
+        v2 = maxNode
         bw.write("$answer")
         br.close()
         bw.close()
     }
 
-    fun dfs(cur: Int, count: Int) {
-        if (visited[cur]) return
-        visited[cur] = true
-        var endFlag = true
-        for ((n, c) in adj[cur]) {
-            if (visited[n]) continue
-            dfs(n, count + c)
-            endFlag = false
-        }
-        if (endFlag) {
-            if (max < count) {
-                max = count
-                maxNode = cur
+    fun dijkstra(start: Int, n: Int) {
+        val visited = BooleanArray(n + 1)
+        val dist = IntArray(n + 1) { Int.MAX_VALUE }
+        dist[start] = 0
+        max = 0
+        maxNode = 1
+        val pq = PriorityQueue<Pair<Int, Int>>(compareBy({ it.second }))
+        pq.offer(Pair(start, 0))
+        while (pq.isNotEmpty()) {
+            val (des, cost) = pq.poll()
+            if (visited[des]) continue
+            visited[des] = true
+            for ((v, c) in adj[des]) {
+                if (visited[v]) continue
+                if (dist[v] > c + dist[des]) {
+                    dist[v] = c + dist[des]
+                    pq.offer(Pair(v, c + dist[des]))
+                }
             }
         }
+        for (i in 1 until dist.size) {
+            if (max < dist[i]) {
+                max = dist[i]
+                maxNode = i
+            }
+        }
+        answer = dist[maxNode]
     }
 }
 
