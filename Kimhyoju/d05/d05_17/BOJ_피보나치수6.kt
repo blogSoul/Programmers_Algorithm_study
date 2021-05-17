@@ -13,7 +13,7 @@ import java.io.OutputStreamWriter
 // 피보나치수를 푸는데 최적화 기법은, 1. DP 2. 행렬의 분할정복
 
 class BOJ_피보나치수6 {
-    val MOD_MAX = 1000000007
+    val MOD_MAX = 1000000007L
     fun main() {
         val br = BufferedReader(InputStreamReader(System.`in`))
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
@@ -55,7 +55,7 @@ class BOJ_피보나치수6 {
                 for (k in 0 until 2) {
                     res[i][j] += mat1[i][k] * mat2[k][j]
                 }
-                res[i][j] %= 1000000007L
+                res[i][j] %= MOD_MAX
             }
         }
         return res
