@@ -18,8 +18,6 @@ class BOJ_피보나치수6 {
         val br = BufferedReader(InputStreamReader(System.`in`))
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val n = br.readLine().toLong()
-//        val answer = fibonacci(n)
-//        bw.write("$answer")
         val normalArray = arrayOf(longArrayOf(1, 1), longArrayOf(1, 0))
         val res = matrixFibonacci(normalArray, n)
         bw.write("${res[0][1]}")
