@@ -5,5 +5,6 @@
 > Programmers Algorithm study 자료를 모으는 repository입니다.
 
 ## :memo:About
+[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=allen246)](https://solved.ac/allen246/)
 
 조원 김효주의 알고리즘 코드 공유 폴더입니다.
