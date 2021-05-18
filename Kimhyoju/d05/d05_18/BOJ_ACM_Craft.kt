@@ -4,8 +4,6 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import java.util.*
-import kotlin.concurrent.fixedRateTimer
 
 // 동적계획법을 적용하는 위상정렬
 
