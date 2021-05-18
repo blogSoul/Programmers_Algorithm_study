@@ -44,7 +44,8 @@ class BOJ_웜홀 {
                 edges.add(listOf(a, b, -c))
             }
 
-            var cycleFlag = false
+            // 아래 주석을 해제해 1부터 n까지 모든 노드를 돌면서 검사하면 답은 나오지만 시간초과가 뜬다.
+//            var cycleFlag = false
 //            for (i in 1..n) {
 //                val res = bellmanFord(i, n)
 //                if (res) {
@@ -55,7 +56,9 @@ class BOJ_웜홀 {
 //            if (cycleFlag) bw.write("YES\n")
 //            else bw.write("NO\n")
 
-            val start = 1
+            // 시작점을 1로 하면 오답이고, n으로 하면 정답이다. 이유는?
+//            val start = 1
+            val start = n
             val cycle = bellmanFord(start, n)
             if (cycle || distance[start] < 0) bw.write("YES\n")
             else bw.write("NO\n")
