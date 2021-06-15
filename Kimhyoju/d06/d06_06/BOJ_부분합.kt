@@ -11,6 +11,7 @@ class BOJ_부분합 {
         val bw = BufferedWriter(OutputStreamWriter(System.`out`))
         val (n, s) = br.readLine().split(" ").map { it.toInt() }
         val numbers = br.readLine().split(" ").map { it.toInt() }
+
         var minLength = Int.MAX_VALUE
         if (numbers[0] >= s) {
             bw.write("1")
