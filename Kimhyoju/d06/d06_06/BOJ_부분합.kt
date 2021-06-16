@@ -19,6 +19,7 @@ class BOJ_부분합 {
             return
         }
         var left = 0
+
         var right = 1
         var sum = 0
         for (i in left..right) sum += numbers[i]
